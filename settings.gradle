@@ -1,0 +1,4 @@
+rootProject.name = 'mss-mp3'
+include 'resource-service'
+include 'song-service'
+
