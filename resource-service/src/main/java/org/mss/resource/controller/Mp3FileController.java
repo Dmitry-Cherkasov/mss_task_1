@@ -21,7 +21,7 @@ public class Mp3FileController {
     public ResponseEntity<Map<String, Integer>> createSong(@RequestBody(required = false) byte[] fileData) {
         Integer id = mp3FileService.save(fileData).getId();
         return ResponseEntity.ok()
-                .body(Map.of("id", id));
+                .body(Map.of(ID, id));
     }
 
     @GetMapping("/{id}")

@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS mss_media_files (
+    id SERIAL PRIMARY KEY,
+    data BYTEA NOT NULL
+);
