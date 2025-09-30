@@ -6,7 +6,6 @@ services:
       POSTGRES_DB: ${RESOURCE_DB_NAME}
       POSTGRES_USER: ${RESOURCE_DB_USER}
       POSTGRES_PASSWORD: ${RESOURCE_DB_PASSWORD}
-      POSTGRES_INITDB_ARGS: "--lc-collate=en_US.UTF-8 --lc-ctype=en_US.UTF-8 --encoding=UTF8"
     volumes:
       - ./init-scripts/resource-db:/docker-entrypoint-initdb.d
     ports:
@@ -19,7 +18,6 @@ services:
       POSTGRES_DB: ${SONG_DB_NAME}
       POSTGRES_USER: ${SONG_DB_USER}
       POSTGRES_PASSWORD: ${SONG_DB_PASSWORD}
-      POSTGRES_INITDB_ARGS: "--lc-collate=en_US.UTF-8 --lc-ctype=en_US.UTF-8 --encoding=UTF8"
     volumes:
       - ./init-scripts/song-db:/docker-entrypoint-initdb.d
     ports:

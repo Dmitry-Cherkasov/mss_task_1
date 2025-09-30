@@ -1,11 +1,15 @@
 # =========================
 # Build Stage
 # =========================
-FROM gradle:6.9.1-jdk17-alpine AS build
+FROM gradle:8.14.3-jdk17-alpine AS build
 WORKDIR /app
 
 COPY gradlew gradlew.bat settings.gradle build.gradle /app/
 COPY gradle /app/gradle
+
+RUN chmod +x gradlew
+RUN ./gradlew dependencies --no-daemon
+
 COPY resource-service/build.gradle /app/resource-service/
 COPY resource-service/src /app/resource-service/src
 
