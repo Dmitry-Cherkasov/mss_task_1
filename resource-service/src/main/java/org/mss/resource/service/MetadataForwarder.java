@@ -13,8 +13,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Component
 @RequiredArgsConstructor
 public class MetadataForwarder {
-    @Value("${song.service.uri}")
-    private String SONG_SERVICE_URI;
+    @Value("${song.service.endpoint}")
+    private String ENDPOINT_PATH;
+    @Value("${song.service.name}")
+    private String SONG_SERVICE_NAME;
     private final RestTemplate restTemplate;
 
     public void sendMetadata(Mp3File mp3File) {
@@ -22,7 +24,7 @@ public class MetadataForwarder {
         MetadataDto dto = MetadataMapper.mapToMetadataDto(metadata);
         dto.setId(mp3File.getId());
         try {
-            restTemplate.postForEntity(SONG_SERVICE_URI, dto, Void.class);
+            restTemplate.postForEntity(getUrl(), dto, Void.class);
         } catch (Exception e) {
             throw new RuntimeException("Failed to forward metadata to Song Service" + e.getMessage());
         }
@@ -30,12 +32,16 @@ public class MetadataForwarder {
 
     public void deleteMetadata(String id) {
         try {
-            String url = UriComponentsBuilder.fromUriString(SONG_SERVICE_URI)
+            String url = UriComponentsBuilder.fromUriString(getUrl())
                     .queryParam("id", id)
                     .toUriString();
             restTemplate.delete(url);
         } catch (Exception e) {
-            throw new RuntimeException("Failed to forward metadata to Song Service");
+            throw new RuntimeException("Failed to retrieve service");
         }
+    }
+
+    private String getUrl() {
+        return "http://" + SONG_SERVICE_NAME + ENDPOINT_PATH;
     }
 }

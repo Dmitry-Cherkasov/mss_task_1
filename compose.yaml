@@ -34,16 +34,32 @@ services:
       SPRING_DATASOURCE_URL: ${RESOURCE_DB_URL}
       SPRING_DATASOURCE_USERNAME: ${RESOURCE_DB_USER}
       SPRING_DATASOURCE_PASSWORD: ${RESOURCE_DB_PASSWORD}
-      SONG_SERVICE_URI: ${SONG_SERVICE_URI}
+      REGISTRY_APP_NAME: ${RESOURCE_APP_NAME}
+      FORWARD_SERVICE_NAME: ${FORWARDED_SERVICE}
+      FORWARD_SERVICE_PATH: ${FORWARDED_ENDPOINT}
+      EUREKA_SERVER: ${EUREKA_SERVER}
 
   song-service:
     build:
       context: .
       dockerfile: song-service/Dockerfile
+    deploy:
+      replicas: 2
     ports:
-      - "8082:8082"
+      - "8082-8083:8082"
     environment:
       SERVICE_PORT: ${SONG_SERVICE_PORT}
       SPRING_DATASOURCE_URL: ${SONG_DB_URL}
       SPRING_DATASOURCE_USERNAME: ${SONG_DB_USER}
       SPRING_DATASOURCE_PASSWORD: ${SONG_DB_PASSWORD}
+      REGISTRY_APP_NAME: ${SONG_APP_NAME}
+      EUREKA_SERVER: ${EUREKA_SERVER}
+
+  eureka-server:
+    build:
+      context: .
+      dockerfile: eureka-service/Dockerfile
+    ports:
+      - "8761:8761"
+    environment:
+      SERVICE_NAME: ${EUREKA_SERVER}
